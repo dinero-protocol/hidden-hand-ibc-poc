@@ -15,12 +15,25 @@ func (k msgServer) SendCreateBribe(goCtx context.Context, msg *types.MsgSendCrea
 
 	// Create the bribe index key.
 	index := types.BribeIndex(msg.Port, msg.ChannelID, msg.Proposer)
-
 	// Check if the bribe already exists.
 	_, found := k.GetBribes(ctx, index)
 	if found {
 		return nil, errors.New("bribe already exists")
 	}
+
+	// Get the bribe creators address.
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, err
+	}
+
+	// Safe Burn the coins.
+	if err := k.SafeBurn(ctx, msg.Port, msg.ChannelID, creator, msg.Denom, int32(msg.Amount)); err != nil {
+		return nil, err
+	}
+
+	// Save the vouchers.
+	k.SaveVoucherDenom(ctx, msg.Port, msg.ChannelID, msg.Denom)
 
 	// Construct the packet
 	var packet types.CreateBribePacketData
@@ -33,7 +46,7 @@ func (k msgServer) SendCreateBribe(goCtx context.Context, msg *types.MsgSendCrea
 	packet.Chain = msg.Chain
 
 	// Transmit the packet
-	_, err := k.TransmitCreateBribePacket(
+	_, err = k.TransmitCreateBribePacket(
 		ctx,
 		packet,
 		msg.Port,

@@ -48,6 +48,19 @@ func (k Keeper) OnRecvCreateBribePacket(ctx sdk.Context, packet channeltypes.Pac
 		return packetAck, errors.New("bribe already exists")
 	}
 
+	// Check if the coin that came in is from this chain.
+	denom, isSaved := k.OriginalDenom(ctx, packet.DestinationPort, packet.DestinationChannel, data.Denom)
+	if !isSaved {
+		denom = VoucherDenom(packet.SourcePort, packet.SourceChannel, data.Denom)
+	}
+
+	// Mint the tokens to the module account.
+	if err := k.bankKeeper.MintCoins(
+		ctx, types.ModuleName, sdk.NewCoins(sdk.NewCoin(denom, sdk.NewInt(int64(data.Amount)))),
+	); err != nil {
+		return packetAck, err
+	}
+
 	bribe := types.Bribes{
 		Proposer: data.Proposer,
 		Title:    data.Title,
