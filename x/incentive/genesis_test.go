@@ -22,6 +22,14 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
+		DenomTraceList: []types.DenomTrace{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -36,5 +44,6 @@ func TestGenesis(t *testing.T) {
 	require.Equal(t, genesisState.PortId, got.PortId)
 
 	require.ElementsMatch(t, genesisState.BribesList, got.BribesList)
+	require.ElementsMatch(t, genesisState.DenomTraceList, got.DenomTraceList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

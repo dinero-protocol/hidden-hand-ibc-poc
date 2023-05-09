@@ -1,0 +1,13 @@
+syntax = "proto3";
+package hhand.incentive;
+
+option go_package = "hhand/x/incentive/types";
+
+message DenomTrace {
+  string index = 1; 
+  string port = 2; 
+  string channel = 3; 
+  string origin = 4; 
+  
+}
+

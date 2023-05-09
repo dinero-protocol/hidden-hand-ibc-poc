@@ -30,6 +30,14 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
+				DenomTraceList: []types.DenomTrace{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -38,6 +46,20 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated bribes",
 			genState: &types.GenesisState{
 				BribesList: []types.Bribes{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated denomTrace",
+			genState: &types.GenesisState{
+				DenomTraceList: []types.DenomTrace{
 					{
 						Index: "0",
 					},
