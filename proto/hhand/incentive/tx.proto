@@ -1,0 +1,7 @@
+syntax = "proto3";
+package hhand.incentive;
+
+option go_package = "hhand/x/incentive/types";
+
+// Msg defines the Msg service.
+service Msg {}

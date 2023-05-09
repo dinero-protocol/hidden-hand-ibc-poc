@@ -1,0 +1,13 @@
+syntax = "proto3";
+package hhand.incentive;
+
+option go_package = "hhand/x/incentive/types";
+
+message IncentivePacketData {
+    oneof packet {
+        NoData noData = 1;
+    }
+}
+
+message NoData {
+}
