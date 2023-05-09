@@ -25,6 +25,7 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 type IncentivePacketData struct {
 	// Types that are valid to be assigned to Packet:
 	//	*IncentivePacketData_NoData
+	//	*IncentivePacketData_CreateBribePacket
 	Packet isIncentivePacketData_Packet `protobuf_oneof:"packet"`
 }
 
@@ -70,8 +71,12 @@ type isIncentivePacketData_Packet interface {
 type IncentivePacketData_NoData struct {
 	NoData *NoData `protobuf:"bytes,1,opt,name=noData,proto3,oneof" json:"noData,omitempty"`
 }
+type IncentivePacketData_CreateBribePacket struct {
+	CreateBribePacket *CreateBribePacketData `protobuf:"bytes,2,opt,name=createBribePacket,proto3,oneof" json:"createBribePacket,omitempty"`
+}
 
-func (*IncentivePacketData_NoData) isIncentivePacketData_Packet() {}
+func (*IncentivePacketData_NoData) isIncentivePacketData_Packet()            {}
+func (*IncentivePacketData_CreateBribePacket) isIncentivePacketData_Packet() {}
 
 func (m *IncentivePacketData) GetPacket() isIncentivePacketData_Packet {
 	if m != nil {
@@ -87,10 +92,18 @@ func (m *IncentivePacketData) GetNoData() *NoData {
 	return nil
 }
 
+func (m *IncentivePacketData) GetCreateBribePacket() *CreateBribePacketData {
+	if x, ok := m.GetPacket().(*IncentivePacketData_CreateBribePacket); ok {
+		return x.CreateBribePacket
+	}
+	return nil
+}
+
 // XXX_OneofWrappers is for the internal use of the proto package.
 func (*IncentivePacketData) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
 		(*IncentivePacketData_NoData)(nil),
+		(*IncentivePacketData_CreateBribePacket)(nil),
 	}
 }
 
@@ -130,25 +143,158 @@ func (m *NoData) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_NoData proto.InternalMessageInfo
 
+// CreateBribePacketData defines a struct for the packet payload
+type CreateBribePacketData struct {
+	Proposer string `protobuf:"bytes,1,opt,name=proposer,proto3" json:"proposer,omitempty"`
+	Title    string `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Block    uint64 `protobuf:"varint,3,opt,name=block,proto3" json:"block,omitempty"`
+	Denom    string `protobuf:"bytes,4,opt,name=denom,proto3" json:"denom,omitempty"`
+	Amount   uint64 `protobuf:"varint,5,opt,name=amount,proto3" json:"amount,omitempty"`
+	Chain    uint64 `protobuf:"varint,6,opt,name=chain,proto3" json:"chain,omitempty"`
+}
+
+func (m *CreateBribePacketData) Reset()         { *m = CreateBribePacketData{} }
+func (m *CreateBribePacketData) String() string { return proto.CompactTextString(m) }
+func (*CreateBribePacketData) ProtoMessage()    {}
+func (*CreateBribePacketData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5657c6004e647c35, []int{2}
+}
+func (m *CreateBribePacketData) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CreateBribePacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CreateBribePacketData.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CreateBribePacketData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateBribePacketData.Merge(m, src)
+}
+func (m *CreateBribePacketData) XXX_Size() int {
+	return m.Size()
+}
+func (m *CreateBribePacketData) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateBribePacketData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateBribePacketData proto.InternalMessageInfo
+
+func (m *CreateBribePacketData) GetProposer() string {
+	if m != nil {
+		return m.Proposer
+	}
+	return ""
+}
+
+func (m *CreateBribePacketData) GetTitle() string {
+	if m != nil {
+		return m.Title
+	}
+	return ""
+}
+
+func (m *CreateBribePacketData) GetBlock() uint64 {
+	if m != nil {
+		return m.Block
+	}
+	return 0
+}
+
+func (m *CreateBribePacketData) GetDenom() string {
+	if m != nil {
+		return m.Denom
+	}
+	return ""
+}
+
+func (m *CreateBribePacketData) GetAmount() uint64 {
+	if m != nil {
+		return m.Amount
+	}
+	return 0
+}
+
+func (m *CreateBribePacketData) GetChain() uint64 {
+	if m != nil {
+		return m.Chain
+	}
+	return 0
+}
+
+// CreateBribePacketAck defines a struct for the packet acknowledgment
+type CreateBribePacketAck struct {
+}
+
+func (m *CreateBribePacketAck) Reset()         { *m = CreateBribePacketAck{} }
+func (m *CreateBribePacketAck) String() string { return proto.CompactTextString(m) }
+func (*CreateBribePacketAck) ProtoMessage()    {}
+func (*CreateBribePacketAck) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5657c6004e647c35, []int{3}
+}
+func (m *CreateBribePacketAck) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CreateBribePacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CreateBribePacketAck.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CreateBribePacketAck) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateBribePacketAck.Merge(m, src)
+}
+func (m *CreateBribePacketAck) XXX_Size() int {
+	return m.Size()
+}
+func (m *CreateBribePacketAck) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateBribePacketAck.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateBribePacketAck proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*IncentivePacketData)(nil), "hhand.incentive.IncentivePacketData")
 	proto.RegisterType((*NoData)(nil), "hhand.incentive.NoData")
+	proto.RegisterType((*CreateBribePacketData)(nil), "hhand.incentive.CreateBribePacketData")
+	proto.RegisterType((*CreateBribePacketAck)(nil), "hhand.incentive.CreateBribePacketAck")
 }
 
 func init() { proto.RegisterFile("hhand/incentive/packet.proto", fileDescriptor_5657c6004e647c35) }
 
 var fileDescriptor_5657c6004e647c35 = []byte{
-	// 160 bytes of a gzipped FileDescriptorProto
+	// 299 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0xc9, 0xc8, 0x48, 0xcc,
 	0x4b, 0xd1, 0xcf, 0xcc, 0x4b, 0x4e, 0xcd, 0x2b, 0xc9, 0x2c, 0x4b, 0xd5, 0x2f, 0x48, 0x4c, 0xce,
 	0x4e, 0x2d, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x07, 0xcb, 0xea, 0xc1, 0x65, 0x95,
-	0x82, 0xb8, 0x84, 0x3d, 0x61, 0x9c, 0x00, 0xb0, 0x4a, 0x97, 0xc4, 0x92, 0x44, 0x21, 0x43, 0x2e,
-	0xb6, 0xbc, 0x7c, 0x10, 0x4b, 0x82, 0x51, 0x81, 0x51, 0x83, 0xdb, 0x48, 0x5c, 0x0f, 0x4d, 0xa3,
-	0x9e, 0x1f, 0x58, 0xda, 0x83, 0x21, 0x08, 0xaa, 0xd0, 0x89, 0x83, 0x8b, 0x0d, 0x62, 0x95, 0x12,
-	0x07, 0x17, 0x1b, 0x44, 0xd6, 0xc9, 0xf0, 0xc4, 0x23, 0x39, 0xc6, 0x0b, 0x8f, 0xe4, 0x18, 0x1f,
-	0x3c, 0x92, 0x63, 0x9c, 0xf0, 0x58, 0x8e, 0xe1, 0xc2, 0x63, 0x39, 0x86, 0x1b, 0x8f, 0xe5, 0x18,
-	0xa2, 0xc4, 0x21, 0xce, 0xac, 0x40, 0x72, 0x68, 0x49, 0x65, 0x41, 0x6a, 0x71, 0x12, 0x1b, 0xd8,
-	0xa1, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0xa0, 0x98, 0x4c, 0x19, 0xc8, 0x00, 0x00, 0x00,
+	0x56, 0x31, 0x72, 0x09, 0x7b, 0xc2, 0x78, 0x01, 0x60, 0xa5, 0x2e, 0x89, 0x25, 0x89, 0x42, 0x86,
+	0x5c, 0x6c, 0x79, 0xf9, 0x20, 0x96, 0x04, 0xa3, 0x02, 0xa3, 0x06, 0xb7, 0x91, 0xb8, 0x1e, 0x9a,
+	0x4e, 0x3d, 0x3f, 0xb0, 0xb4, 0x07, 0x43, 0x10, 0x54, 0xa1, 0x50, 0x18, 0x97, 0x60, 0x72, 0x51,
+	0x6a, 0x62, 0x49, 0xaa, 0x53, 0x51, 0x66, 0x12, 0xd4, 0x2c, 0x09, 0x26, 0xb0, 0x6e, 0x35, 0x0c,
+	0xdd, 0xce, 0xe8, 0x2a, 0xa1, 0x86, 0x61, 0x1a, 0xe1, 0xc4, 0xc1, 0xc5, 0x06, 0xf1, 0x83, 0x12,
+	0x07, 0x17, 0x1b, 0xc4, 0x56, 0xa5, 0xc5, 0x8c, 0x5c, 0xa2, 0x58, 0x8d, 0x10, 0x92, 0xe2, 0xe2,
+	0x28, 0x28, 0xca, 0x2f, 0xc8, 0x2f, 0x4e, 0x2d, 0x02, 0x3b, 0x9d, 0x33, 0x08, 0xce, 0x17, 0x12,
+	0xe1, 0x62, 0x2d, 0xc9, 0x2c, 0xc9, 0x49, 0x05, 0xbb, 0x8a, 0x33, 0x08, 0xc2, 0x01, 0x89, 0x26,
+	0xe5, 0xe4, 0x27, 0x67, 0x4b, 0x30, 0x2b, 0x30, 0x6a, 0xb0, 0x04, 0x41, 0x38, 0x20, 0xd1, 0x94,
+	0xd4, 0xbc, 0xfc, 0x5c, 0x09, 0x16, 0x88, 0x5a, 0x30, 0x47, 0x48, 0x8c, 0x8b, 0x2d, 0x31, 0x37,
+	0xbf, 0x34, 0xaf, 0x44, 0x82, 0x15, 0xac, 0x18, 0xca, 0x03, 0xa9, 0x4e, 0xce, 0x48, 0xcc, 0xcc,
+	0x93, 0x60, 0x83, 0x98, 0x01, 0xe6, 0x28, 0x89, 0x71, 0x89, 0x60, 0x38, 0xd2, 0x31, 0x39, 0xdb,
+	0xc9, 0xf0, 0xc4, 0x23, 0x39, 0xc6, 0x0b, 0x8f, 0xe4, 0x18, 0x1f, 0x3c, 0x92, 0x63, 0x9c, 0xf0,
+	0x58, 0x8e, 0xe1, 0xc2, 0x63, 0x39, 0x86, 0x1b, 0x8f, 0xe5, 0x18, 0xa2, 0xc4, 0x21, 0xb1, 0x57,
+	0x81, 0x14, 0x7f, 0x25, 0x95, 0x05, 0xa9, 0xc5, 0x49, 0x6c, 0xe0, 0xf8, 0x33, 0x06, 0x04, 0x00,
+	0x00, 0xff, 0xff, 0xb7, 0xf2, 0x13, 0x3b, 0xdf, 0x01, 0x00, 0x00,
 }
 
 func (m *IncentivePacketData) Marshal() (dAtA []byte, err error) {
@@ -204,6 +350,27 @@ func (m *IncentivePacketData_NoData) MarshalToSizedBuffer(dAtA []byte) (int, err
 	}
 	return len(dAtA) - i, nil
 }
+func (m *IncentivePacketData_CreateBribePacket) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *IncentivePacketData_CreateBribePacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.CreateBribePacket != nil {
+		{
+			size, err := m.CreateBribePacket.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintPacket(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	return len(dAtA) - i, nil
+}
 func (m *NoData) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -220,6 +387,88 @@ func (m *NoData) MarshalTo(dAtA []byte) (int, error) {
 }
 
 func (m *NoData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *CreateBribePacketData) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CreateBribePacketData) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CreateBribePacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Chain != 0 {
+		i = encodeVarintPacket(dAtA, i, uint64(m.Chain))
+		i--
+		dAtA[i] = 0x30
+	}
+	if m.Amount != 0 {
+		i = encodeVarintPacket(dAtA, i, uint64(m.Amount))
+		i--
+		dAtA[i] = 0x28
+	}
+	if len(m.Denom) > 0 {
+		i -= len(m.Denom)
+		copy(dAtA[i:], m.Denom)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Denom)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if m.Block != 0 {
+		i = encodeVarintPacket(dAtA, i, uint64(m.Block))
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.Title) > 0 {
+		i -= len(m.Title)
+		copy(dAtA[i:], m.Title)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Title)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Proposer) > 0 {
+		i -= len(m.Proposer)
+		copy(dAtA[i:], m.Proposer)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Proposer)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *CreateBribePacketAck) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CreateBribePacketAck) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CreateBribePacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -262,7 +511,58 @@ func (m *IncentivePacketData_NoData) Size() (n int) {
 	}
 	return n
 }
+func (m *IncentivePacketData_CreateBribePacket) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.CreateBribePacket != nil {
+		l = m.CreateBribePacket.Size()
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	return n
+}
 func (m *NoData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *CreateBribePacketData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Proposer)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.Title)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	if m.Block != 0 {
+		n += 1 + sovPacket(uint64(m.Block))
+	}
+	l = len(m.Denom)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	if m.Amount != 0 {
+		n += 1 + sovPacket(uint64(m.Amount))
+	}
+	if m.Chain != 0 {
+		n += 1 + sovPacket(uint64(m.Chain))
+	}
+	return n
+}
+
+func (m *CreateBribePacketAck) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -341,6 +641,41 @@ func (m *IncentivePacketData) Unmarshal(dAtA []byte) error {
 			}
 			m.Packet = &IncentivePacketData_NoData{v}
 			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CreateBribePacket", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &CreateBribePacketData{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Packet = &IncentivePacketData_CreateBribePacket{v}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipPacket(dAtA[iNdEx:])
@@ -389,6 +724,259 @@ func (m *NoData) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: NoData: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPacket(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CreateBribePacketData) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPacket
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CreateBribePacketData: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CreateBribePacketData: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Proposer", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Proposer = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Title", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Title = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Block", wireType)
+			}
+			m.Block = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Block |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Denom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
+			}
+			m.Amount = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Amount |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Chain", wireType)
+			}
+			m.Chain = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Chain |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPacket(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CreateBribePacketAck) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPacket
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CreateBribePacketAck: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CreateBribePacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

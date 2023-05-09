@@ -67037,6 +67037,8 @@ definitions:
       chain:
         type: string
         format: uint64
+  hhand.incentive.MsgSendCreateBribeResponse:
+    type: object
   hhand.incentive.Params:
     type: object
     description: Params defines the parameters for the module.

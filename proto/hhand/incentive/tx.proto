@@ -1,7 +1,25 @@
 syntax = "proto3";
+
 package hhand.incentive;
 
 option go_package = "hhand/x/incentive/types";
 
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  rpc SendCreateBribe (MsgSendCreateBribe) returns (MsgSendCreateBribeResponse);
+}
+message MsgSendCreateBribe {
+  string proposer         =  5;
+  string title            =  6;
+  uint64 block            =  7;
+  string denom            =  8;
+  uint64 amount           =  9;
+  uint64 chain            = 10;
+  string creator          =  1;
+  string port             =  2;
+  string channelID        =  3;
+  uint64 timeoutTimestamp =  4;
+}
+
+message MsgSendCreateBribeResponse {}
+

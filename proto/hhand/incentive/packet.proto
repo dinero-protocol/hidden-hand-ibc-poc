@@ -1,13 +1,28 @@
 syntax = "proto3";
+
 package hhand.incentive;
 
 option go_package = "hhand/x/incentive/types";
 
 message IncentivePacketData {
-    oneof packet {
-        NoData noData = 1;
-    }
+  oneof packet {
+    NoData                noData            = 1;
+    CreateBribePacketData createBribePacket = 2;
+  }
 }
 
-message NoData {
+message NoData {}
+
+// CreateBribePacketData defines a struct for the packet payload
+message CreateBribePacketData {
+  string proposer = 1;
+  string title    = 2;
+  uint64 block    = 3;
+  string denom    = 4;
+  uint64 amount   = 5;
+  uint64 chain    = 6;
 }
+
+// CreateBribePacketAck defines a struct for the packet acknowledgment
+message CreateBribePacketAck {}
+
