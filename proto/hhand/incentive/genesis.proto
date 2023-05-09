@@ -4,12 +4,14 @@ package hhand.incentive;
 
 import "gogoproto/gogo.proto";
 import "hhand/incentive/params.proto";
+import "hhand/incentive/bribes.proto";
 
 option go_package = "hhand/x/incentive/types";
 
 // GenesisState defines the incentive module's genesis state.
 message GenesisState {
-  Params params  = 1 [(gogoproto.nullable) = false];
-  string port_id = 2;
+           Params params     = 1 [(gogoproto.nullable) = false];
+           string port_id    = 2;
+  repeated Bribes bribesList = 3 [(gogoproto.nullable) = false];
 }
 

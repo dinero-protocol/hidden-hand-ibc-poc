@@ -1,0 +1,16 @@
+syntax = "proto3";
+package hhand.incentive;
+
+option go_package = "hhand/x/incentive/types";
+
+message Bribes {
+  string index = 1; 
+  string proposer = 2; 
+  string title = 3; 
+  uint64 block = 4; 
+  string denom = 5; 
+  uint64 amount = 6; 
+  uint64 chain = 7; 
+  
+}
+
