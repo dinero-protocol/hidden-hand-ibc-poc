@@ -2,16 +2,25 @@ package keeper
 
 import (
 	"context"
+	"errors"
+
+	"hhand/x/incentive/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	clienttypes "github.com/cosmos/ibc-go/v6/modules/core/02-client/types"
-	"hhand/x/incentive/types"
 )
 
 func (k msgServer) SendCreateBribe(goCtx context.Context, msg *types.MsgSendCreateBribe) (*types.MsgSendCreateBribeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: logic before transmitting the packet
+	// Create the bribe index key.
+	index := types.BribeIndex(msg.Port, msg.ChannelID, msg.Proposer)
+
+	// Check if the bribe already exists.
+	_, found := k.GetBribes(ctx, index)
+	if found {
+		return nil, errors.New("bribe already exists")
+	}
 
 	// Construct the packet
 	var packet types.CreateBribePacketData

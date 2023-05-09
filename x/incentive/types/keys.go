@@ -1,5 +1,7 @@
 package types
 
+import fmt "fmt"
+
 const (
 	// ModuleName defines the module name
 	ModuleName = "incentive"
@@ -27,4 +29,9 @@ var (
 
 func KeyPrefix(p string) []byte {
 	return []byte(p)
+}
+
+// Create the bribe index key.
+func BribeIndex(portID string, channelID string, proposer string) string {
+	return fmt.Sprintf("%s-%s-%s", portID, channelID, proposer)
 }

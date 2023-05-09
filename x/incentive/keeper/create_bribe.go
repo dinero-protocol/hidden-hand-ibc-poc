@@ -3,12 +3,13 @@ package keeper
 import (
 	"errors"
 
+	"hhand/x/incentive/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	clienttypes "github.com/cosmos/ibc-go/v6/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v6/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v6/modules/core/24-host"
-	"hhand/x/incentive/types"
 )
 
 // TransmitCreateBribePacket transmits the packet over IBC with the specified source port and source channel
@@ -40,7 +41,25 @@ func (k Keeper) OnRecvCreateBribePacket(ctx sdk.Context, packet channeltypes.Pac
 		return packetAck, err
 	}
 
-	// TODO: packet reception logic
+	// Check if the bribe already exists.
+	index := types.BribeIndex(packet.GetSourcePort(), packet.GetSourceChannel(), data.Proposer)
+	_, found := k.GetBribes(ctx, index)
+	if found {
+		return packetAck, errors.New("bribe already exists")
+	}
+
+	bribe := types.Bribes{
+		Proposer: data.Proposer,
+		Title:    data.Title,
+		Block:    data.Block,
+		Denom:    data.Denom,
+		Amount:   data.Amount,
+		Chain:    data.Chain,
+	}
+	bribe.Index = index
+
+	// Set the bribe
+	k.SetBribes(ctx, bribe)
 
 	return packetAck, nil
 }
@@ -64,7 +83,18 @@ func (k Keeper) OnAcknowledgementCreateBribePacket(ctx sdk.Context, packet chann
 			return errors.New("cannot unmarshal acknowledgment")
 		}
 
-		// TODO: successful acknowledgement logic
+		// Set the Bribe.
+		index := types.BribeIndex(packet.GetSourcePort(), packet.GetSourceChannel(), data.Proposer)
+		bribe := types.Bribes{
+			Proposer: data.Proposer,
+			Title:    data.Title,
+			Block:    data.Block,
+			Denom:    data.Denom,
+			Amount:   data.Amount,
+			Chain:    data.Chain,
+		}
+		bribe.Index = index
+		k.SetBribes(ctx, bribe)
 
 		return nil
 	default:
