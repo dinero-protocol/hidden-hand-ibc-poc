@@ -75,7 +75,7 @@ func CmdSendCreateBribe() *cobra.Command {
 
 func CmdDistibuteBribes() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "Distribute Bribes [to]",
+		Use:   "distro-bribe",
 		Short: "Distribute the bribes to the voters", // Mock
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {

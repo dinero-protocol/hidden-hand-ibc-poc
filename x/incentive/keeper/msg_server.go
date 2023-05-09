@@ -22,12 +22,6 @@ var _ types.MsgServer = msgServer{}
 func (m msgServer) DistributeBribe(c context.Context, msg *types.MsgDistributeBribeRequest) (*types.MsgDistributeBribeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 
-	// Mock distribution.
-	to, err := sdk.AccAddressFromBech32(msg.To)
-	if err != nil {
-		return nil, err
-	}
-
 	bribes := m.GetAllBribes(ctx)
 	totalCoins := sdk.NewCoins()
 	for _, bribe := range bribes {
@@ -36,9 +30,12 @@ func (m msgServer) DistributeBribe(c context.Context, msg *types.MsgDistributeBr
 		m.RemoveBribes(ctx, bribe.Index)
 	}
 
-	if err := m.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, to, totalCoins); err != nil {
-		return nil, err
-	}
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			"DistributeBribes",
+			sdk.NewAttribute("total_bribes", totalCoins.String()),
+		),
+	)
 
 	return &types.MsgDistributeBribeResponse{}, nil
 }
