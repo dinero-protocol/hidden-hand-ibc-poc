@@ -72,3 +72,43 @@ func (msg *MsgSendCreateBribe) ValidateBasic() error {
 	}
 	return nil
 }
+
+var (
+	_ sdk.Msg = &MsgDistributeBribeRequest{}
+)
+
+func (msg *MsgDistributeBribeRequest) GetSigners() []sdk.AccAddress {
+	creator, err := sdk.AccAddressFromBech32(msg.To)
+	if err != nil {
+		panic(err)
+	}
+	return []sdk.AccAddress{creator}
+}
+
+func (msg *MsgDistributeBribeRequest) Route() string {
+	return RouterKey
+}
+
+func (msg *MsgDistributeBribeRequest) Type() string {
+	return "DistributeBribeRequest"
+}
+
+func (msg *MsgDistributeBribeRequest) ValidateBasic() error {
+	_, err := sdk.AccAddressFromBech32(msg.To)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+	return nil
+}
+
+func (msg *MsgDistributeBribeRequest) GetSignBytes() []byte {
+	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
+}
+
+func NewMsgDistributeBribeRequest(
+	to string,
+) *MsgDistributeBribeRequest {
+	return &MsgDistributeBribeRequest{
+		To: to,
+	}
+}

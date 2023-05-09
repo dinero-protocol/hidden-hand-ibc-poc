@@ -9,6 +9,7 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSendCreateBribe{}, "incentive/SendCreateBribe", nil)
+	cdc.RegisterConcrete(&MsgDistributeBribeRequest{}, "incentive/DistributeBribe", nil)
 	// this line is used by starport scaffolding # 2
 }
 

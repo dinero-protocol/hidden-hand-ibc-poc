@@ -3,13 +3,14 @@ package cli
 import (
 	"strconv"
 
+	"hhand/x/incentive/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	channelutils "github.com/cosmos/ibc-go/v6/modules/core/04-channel/client/utils"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
-	"hhand/x/incentive/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -62,6 +63,31 @@ func CmdSendCreateBribe() *cobra.Command {
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	cmd.Flags().Uint64(flagPacketTimeoutTimestamp, DefaultRelativePacketTimeoutTimestamp, "Packet timeout timestamp in nanoseconds. Default is 10 minutes.")
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdDistibuteBribes() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "Distribute Bribes [to]",
+		Short: "Distribute the bribes to the voters", // Mock
+		Args:  cobra.ExactArgs(0),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			// Get the creator address.
+			creator := clientCtx.GetFromAddress().String()
+			msg := types.NewMsgDistributeBribeRequest(creator)
+
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}

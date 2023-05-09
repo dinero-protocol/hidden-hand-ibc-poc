@@ -7,6 +7,7 @@ option go_package = "hhand/x/incentive/types";
 // Msg defines the Msg service.
 service Msg {
   rpc SendCreateBribe (MsgSendCreateBribe) returns (MsgSendCreateBribeResponse);
+  rpc DistributeBribe (MsgDistributeBribeRequest) returns (MsgDistributeBribeResponse);
 }
 message MsgSendCreateBribe {
   string proposer         =  5;
@@ -20,6 +21,12 @@ message MsgSendCreateBribe {
   string channelID        =  3;
   uint64 timeoutTimestamp =  4;
 }
+message MsgDistributeBribeRequest {
+  string to              =  1;
+  string denom          =  2;
+  uint64 amount         =  3;
+}
+message MsgDistributeBribeResponse {}
 
 message MsgSendCreateBribeResponse {}
 
